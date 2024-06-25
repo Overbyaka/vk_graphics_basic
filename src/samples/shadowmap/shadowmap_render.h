@@ -50,6 +50,10 @@ private:
   etna::Sampler defaultSampler;
   etna::Buffer constants;
 
+  etna::Image vsmDepthBuffer;
+  etna::Image vsmMoments;
+  etna::Image vsmMomentsBlur;
+
   VkCommandPool    m_commandPool    = VK_NULL_HANDLE;
 
   struct
@@ -77,6 +81,11 @@ private:
 
   etna::GraphicsPipeline m_basicForwardPipeline {};
   etna::GraphicsPipeline m_shadowPipeline {};
+
+  
+  etna::GraphicsPipeline m_vsmForwardPipeline{};
+  etna::GraphicsPipeline m_vsmPipeline{};
+  etna::ComputePipeline m_vsmBlurPipeline{};
   
   VkSurfaceKHR m_surface = VK_NULL_HANDLE;
   VulkanSwapChain m_swapchain;
@@ -85,6 +94,7 @@ private:
   uint32_t m_width  = 1024u;
   uint32_t m_height = 1024u;
   uint32_t m_framesInFlight = 2u;
+  bool m_vsm   = false;
   bool m_vsync = false;
 
   vk::PhysicalDeviceFeatures m_enabledDeviceFeatures = {};
@@ -126,6 +136,7 @@ private:
  
   void DrawFrameSimple(bool draw_gui);
 
+  void BuildCommandBufferVSM(VkCommandBuffer a_cmdBuff, VkImage a_targetImage, VkImageView a_targetImageView);
   void BuildCommandBufferSimple(VkCommandBuffer a_cmdBuff, VkImage a_targetImage, VkImageView a_targetImageView);
 
   void DrawSceneCmd(VkCommandBuffer a_cmdBuff, const float4x4& a_wvp, VkPipelineLayout a_pipelineLayout = VK_NULL_HANDLE);
