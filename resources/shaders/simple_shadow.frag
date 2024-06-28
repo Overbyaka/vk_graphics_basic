@@ -14,13 +14,6 @@ layout (location = 0 ) in VS_OUT
   vec2 texCoord;
 } surf;
 
-layout(push_constant) uniform params_t
-{
-  mat4 mProjView;
-  mat4 mModel;
-  vec3 color;
-} params;
-
 layout(binding = 0, set = 0) uniform AppData
 {
   UniformParams Params;
@@ -65,7 +58,10 @@ void main()
   const bool  outOfView = (shadowTexCoord.x < 0.0001f || shadowTexCoord.x > 0.9999f || shadowTexCoord.y < 0.0091f || shadowTexCoord.y > 0.9999f);
   const float shadow    = ((posLightSpaceNDC.z < textureLod(shadowMap, shadowTexCoord, 0).x + 0.001f) || outOfView) ? 1.0f : 0.0f;
 
-  vec4 lightColor1 = vec4(params.color, 1.0f);
+  const vec4 dark_violet = vec4(0.59f, 0.0f, 0.82f, 1.0f);
+  const vec4 chartreuse  = vec4(0.5f, 1.0f, 0.0f, 1.0f);
+
+  vec4 lightColor1 = mix(dark_violet, chartreuse, abs(sin(Params.time)));
   vec4 lightColor2 = vec4(1.0f, 1.0f, 1.0f, 1.0f);
    
   vec3 lightDir   = normalize(Params.lightPos - surf.wPos);
