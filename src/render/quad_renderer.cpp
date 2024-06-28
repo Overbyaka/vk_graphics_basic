@@ -23,8 +23,7 @@ void QuadRenderer::RecordCommands(vk::CommandBuffer cmdBuff, vk::Image targetIma
   auto set                = etna::create_descriptor_set(programInfo.getDescriptorLayoutId(0), cmdBuff, { etna::Binding{ 0, inTex.genBinding(sampler.get(), vk::ImageLayout::eShaderReadOnlyOptimal) } });
   vk::DescriptorSet vkSet = set.getVkSet();
 
-  auto color_attachment = etna::RenderTargetState::AttachmentParams{ targetImage, targetImageView };
-  etna::RenderTargetState renderTargets(cmdBuff, m_rect, { color_attachment }, {});
+  etna::RenderTargetState renderTargets(cmdBuff, m_rect, { { .image = targetImage, .view = targetImageView, .loadOp = vk::AttachmentLoadOp::eLoad } }, {});
 
   cmdBuff.bindPipeline(vk::PipelineBindPoint::eGraphics, m_pipeline.getVkPipeline());
   cmdBuff.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, m_pipeline.getVkPipelineLayout(), 0, { vkSet }, {});

@@ -1,5 +1,4 @@
 #include "shadowmap_render.h"
-#include "imgui.h"
 
 #include "../../render/render_gui.h"
 
@@ -14,8 +13,8 @@ void SimpleShadowmapRender::SetupGUIElements()
 
     ImGui::ColorEdit3("Meshes base color", m_uniforms.baseColor.M, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoInputs);
     ImGui::SliderFloat3("Light source position", m_uniforms.lightPos.M, -10.f, 10.f);
-    ImGui::Checkbox("use ToneMap (Exposure)", &m_useToneMap);
-    ImGui::SliderFloat("Light brightness", &m_uniforms.lightBrightness, 0., 20.);
+    ImGui::Checkbox("Tonemapping", &m_useTonemapping);
+    ImGui::SliderFloat("Light brightness", &m_uniforms.lightBrightness, 0.0, 100.0, nullptr, ImGuiSliderFlags_Logarithmic);
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
     ImGui::NewLine();
